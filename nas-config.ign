@@ -1,0 +1,50 @@
+{
+  "ignition": {
+    "version": "3.5.0"
+  },
+  "passwd": {
+    "users": [
+      {
+        "groups": [
+          "wheel",
+          "sudo",
+          "docker"
+        ],
+        "name": "core",
+        "passwordHash": "$y$j9T$9x/sMvOHn2jui1TWtN45d/$d6x9dqRZTbyyPWUtZzYjMk2uETN9pos83LSIhhH8DID",
+        "sshAuthorizedKeys": [
+          "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJfE8mo+VRa+DdowDDYGnfFeRhPIepsuo+eBtwOsICUe a@t480"
+        ]
+      }
+    ]
+  },
+  "storage": {
+    "files": [
+      {
+        "path": "/etc/NetworkManager/system-connections/wifi-home.nmconnection",
+        "contents": {
+          "compression": "gzip",
+          "source": "data:;base64,H4sIAAAAAAAC/0yPzUoEMRCE7/0UAc8REX/YgSDK4hvsaRkkJrU7YSbdIekxzNvLqAePVXwFX52DMCNoEh4pRdfTJdlJMki3gp9IflX5w5zWFXTe65HCIoxosw/Wx1jRmiuo2TNYKUuES3ypvmldg64V1FqK7tRPHxFMN+b/8Pg03D8P72/D4TAcH4fXO2N2YEYzSQ2Lmi51vjUMxGZUzCfMIh3VBt/w8qtkG8Jak27j7jxZv1ydFDDN2Gy+ZnW9eFvaTOdUvh5GytBJotsP0ncAAAD//5XKCvkKAQAA"
+        },
+        "mode": 384
+      },
+      {
+        "path": "/etc/hostname",
+        "contents": {
+          "compression": "",
+          "source": "data:,nas"
+        },
+        "mode": 420
+      }
+    ]
+  },
+  "systemd": {
+    "units": [
+      {
+        "contents": "[Unit]\nDescription=Enable Wi-Fi\nWants=network-online.target\nAfter=network-online.target\nBefore=zincati.service\nConditionPathExists=!/var/lib/%N.stamp\n[Service]\nType=oneshot\nRemainAfterExit=yes\nExecStart=/usr/bin/rpm-ostree install -y --allow-inactive NetworkManager-wifi atheros-firmware\nExecStart=/bin/touch /var/lib/%N.stamp\nExecStart=/bin/systemctl --no-block reboot\n[Install]\nWantedBy=multi-user.target\n",
+        "enabled": true,
+        "name": "rpm-ostree-install-wifi.service"
+      }
+    ]
+  }
+}

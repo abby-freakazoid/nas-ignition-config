@@ -1,0 +1,60 @@
+variant: fcos
+version: 1.6.0
+passwd:
+  users:
+    - name: core
+      password_hash: $y$j9T$9x/sMvOHn2jui1TWtN45d/$d6x9dqRZTbyyPWUtZzYjMk2uETN9pos83LSIhhH8DID # TODO for testing
+      ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIJfE8mo+VRa+DdowDDYGnfFeRhPIepsuo+eBtwOsICUe a@t480
+      groups:
+      - wheel
+      - sudo
+      - docker
+
+systemd:
+  units:
+    # Enable Wi-Fi in NetworkManager for an Intel wireless card
+    - name: rpm-ostree-install-wifi.service
+      enabled: true
+      contents: |
+        [Unit]
+        Description=Enable Wi-Fi
+        Wants=network-online.target
+        After=network-online.target
+        Before=zincati.service
+        ConditionPathExists=!/var/lib/%N.stamp
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStart=/usr/bin/rpm-ostree install -y --allow-inactive NetworkManager-wifi atheros-firmware
+        ExecStart=/bin/touch /var/lib/%N.stamp
+        ExecStart=/bin/systemctl --no-block reboot
+        [Install]
+        WantedBy=multi-user.target
+storage:
+  files:
+    - path: /etc/NetworkManager/system-connections/wifi-home.nmconnection
+      mode: 0600
+      contents:
+        inline: |
+          [connection]
+          id=wifi-home
+          type=wifi
+          autoconnect=true
+          [wifi]
+          cloned-mac-address=permanent
+          mode=infrastructure
+          [wifi-security]
+          auth-alg=open
+          key-mgmt=wpa-psk
+          [ipv4]
+          method=auto
+    - path: /etc/hostname
+      mode: 0644
+      contents:
+        inline: nas
+    # - path: /usr/lib/systemd/logind.conf  # FAIL: change rejected cuz read-only
+    #   mode: 0644
+    #   append:
+    #     - inline: "HandleLidSwitch=ignore"
+
