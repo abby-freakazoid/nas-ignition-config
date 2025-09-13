@@ -24,7 +24,7 @@
         "path": "/etc/NetworkManager/system-connections/wifi-home.nmconnection",
         "contents": {
           "compression": "gzip",
-          "source": "data:;base64,H4sIAAAAAAAC/0yPzUoEMRCE7/0UAc8REX/YgSDK4hvsaRkkJrU7YSbdIekxzNvLqAePVXwFX52DMCNoEh4pRdfTJdlJMki3gp9IflX5w5zWFXTe65HCIoxosw/Wx1jRmiuo2TNYKUuES3ypvmldg64V1FqK7tRPHxFMN+b/8Pg03D8P72/D4TAcH4fXO2N2YEYzSQ2Lmi51vjUMxGZUzCfMIh3VBt/w8qtkG8Jak27j7jxZv1ydFDDN2Gy+ZnW9eFvaTOdUvh5GytBJotsP0ncAAAD//5XKCvkKAQAA"
+          "source": "data:;base64,H4sIAAAAAAAC/yyOMQ6EMAwEe/8l3bV5CUphJQYssB05ziF+f+JEuavd0SzVVKkGmxbgli9eOe0mBHF3+kfAGfbOcvgkWJ66QD1NqSXBmrA1pzFyJxdU0gCxRpl1dRzhs8b095cG1ekcd3nAe8Jzy9ZJ4aA7ySaRr46pjwMW7t9PAaHYreXHAn4BAAD//8YGiqWvAAAA"
         },
         "mode": 384
       },
@@ -33,6 +33,14 @@
         "contents": {
           "compression": "",
           "source": "data:,nas"
+        },
+        "mode": 420
+      },
+      {
+        "path": "/etc/systemd/system/systemd-logind.service.d/override.conf",
+        "contents": {
+          "compression": "",
+          "source": "data:,HandleLidSwitch%3Dignore"
         },
         "mode": 420
       }
